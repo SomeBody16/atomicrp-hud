@@ -23,8 +23,8 @@ const initCompass = () => {
   const mainColor = '#F60';
   const subColor = '#AAA';
 
-  const mainSize = 30;
-  const subSize = 20;
+  const mainSize = 40;
+  const subSize = 30;
 
   const steps = 36 * 2;
   for (let i = 0; i < steps; i++) {
@@ -34,8 +34,7 @@ const initCompass = () => {
         letter: 'N',
         letterAngle: 0,
         color: '#F00',
-        fontSize: 35,
-        fontStyle: 'bold',
+        fontSize: 50,
       },
       225: {
         letter: 'NW',
@@ -93,7 +92,7 @@ const initCompass = () => {
         fontFamily: 'Redemption',
         fill: letters[angle].color,
       });
-      letter.offsetX(letter.width() / 2);
+      letter.offsetX(letter.width() / 2.5);
       letter.offsetY(letter.height() / 3);
       letter.rotation(letters[angle].letterAngle);
       group.add(letter);
