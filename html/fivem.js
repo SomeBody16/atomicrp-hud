@@ -7,17 +7,18 @@ const fivemCall = ({action, args}) => {
 
   func(...args);
 }
-
-window.addEventListener('message', event => fivemCall(event.data));
+const fivemCallArr = (arr) => arr.forEach(fivemCall);
+window.addEventListener('message', event => fivemCallArr(event.data));
 
 /**
- * data: {
+ * data: [
+ *  {
  *   action: 'setShow',
  *   args: [true],
- * }
- *
- * data: {
+ *  },
+ *  {
  *   action: 'stats.hide',
  *   args: ['armor'],
- * }
+ *  },
+ * ]
  */

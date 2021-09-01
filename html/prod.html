@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="SomeBody16#1616" />
+  <title>pl.somebody16.atomicrp.hud</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/konva@8/konva.min.js"></script>
+  <script src="helpers.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="fivem.js" defer></script>
+</head>
+<body>
+
+<svg>
+  <filter id="drunk">
+    <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="2" seed="2">
+      <animate attributeName="baseFrequency" dur="120s" values="0.02;0.005;0.02" repeatCount="indefinite"></animate>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" scale="25"></feDisplacementMap>
+  </filter>
+</svg>
+
+<div
+  id="container"
+  style="width: 1080px; height: 720px;"
+></div>
+
+</body>
+</html>
