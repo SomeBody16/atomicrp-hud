@@ -93,7 +93,7 @@ const initCompass = () => {
         fill: letters[angle].color,
         ...shadow,
       });
-      letter.offsetX(letter.width() / 2.5);
+      letter.offsetX(letter.width() / 2);
       letter.offsetY(letter.height() / 3);
       letter.rotation(letters[angle].letterAngle);
       group.add(letter);
@@ -306,7 +306,7 @@ const initPlace = () => {
   return { primary, secondary };
 }
 
-const carMaxAngle = 288;
+const carMaxAngle = 298;
 const initCar = () => {
   const speedometer = new Konva.Arc({
     ...mapPos,
@@ -317,7 +317,16 @@ const initCar = () => {
     clockwise: true,
     ...shadow,
   });
-  speedometer.rotation(50);
+  speedometer.rotation(40);
+
+  const speedometerFinish = new Konva.Arc({
+    ...mapPos,
+    innerRadius: statsRadius + 4,
+    outerRadius: statsRadius + 26,
+    angle: 0.5,
+    fill: '#F00',
+  });
+  speedometerFinish.rotation(carMaxAngle + 40);
 
   const tachometer = new Konva.Arc({
     ...mapPos,
@@ -328,37 +337,82 @@ const initCar = () => {
     clockwise: true,
     ...shadow,
   });
-  tachometer.rotation(50);
+  tachometer.rotation(40);
+  const tachometerFinish = new Konva.Arc({
+    ...mapPos,
+    innerRadius: statsRadius - 4,
+    outerRadius: statsRadius - 16,
+    angle: 0.5,
+    fill: '#F00',
+  });
+  tachometerFinish.rotation(carMaxAngle + 40);
 
-  const speedometerText = new Konva.Text({
-    ...getCirclePos(textRadius, 57, mapPos),
-    text: `0mph`,
-    fontSize: 70,
+  const shiftBackground = new Konva.Group();
+  const shiftBackgroundPos = getCirclePos(statsRadius + 5, 45, mapPos);
+  shiftBackground.add(new Konva.Circle({
+    ...shiftBackgroundPos,
+    radius: 40,
+    fill: 'black',
+    ...shadow,
+  }));
+
+  const dots = 24;
+  for (let i = 0; i < dots; i++) {
+    shiftBackground.add(new Konva.Circle({
+      ...getCirclePos(37, (360 / dots) * i, shiftBackgroundPos),
+      radius: 2,
+      fill: 'white',
+    }))
+  }
+
+  const shiftText = new Konva.Text({
+    ...shiftBackgroundPos,
+    text: `3`,
+    fontSize: 60,
     fontFamily: 'Redemption',
     fill: 'white',
     align: 'center',
     ...shadow,
   });
-  speedometerText.move({x: -30, y: 0});
+  shiftText.offsetX(shiftText.width() / 2.2);
+  shiftText.offsetY(shiftText.height() / 2.2);
 
-  return { speedometer, tachometer, speedometerText };
+  const shiftTextPos = shiftText.position();
+  const speedometerText = new Konva.Text({
+    x: shiftTextPos.x + 80,
+    y: shiftTextPos.y,
+    text: `0mph`,
+    fontSize: 60,
+    fontFamily: 'Redemption',
+    fill: 'white',
+    align: 'center',
+    ...shadow,
+  });
+  speedometerText.offsetX(shiftText.width() / 2);
+  speedometerText.offsetY(shiftText.height() / 2.2);
+
+
+  return { speedometer, speedometerFinish, tachometer, tachometerFinish, speedometerText, shiftBackground, shiftText};
 }
 
-const hud = {
-  layer: {
-    display: new Konva.Layer(),
-    // wavy: new Konva.Layer(),
-  },
-  component: {
-    compass: initCompass(),
-    stats: initStats(),
-    atomicId: initAtomicId(),
-    place: initPlace(),
-    car: initCar(),
-  },
-  switch: {
-    compassOpened: false,
-  }
+let hud = {};
+const initHud = () => {
+  return {
+    layer: {
+      display: new Konva.Layer(),
+      // wavy: new Konva.Layer(),
+    },
+    component: {
+      compass: initCompass(),
+      stats: initStats(),
+      atomicId: initAtomicId(),
+      place: initPlace(),
+      car: initCar(),
+    },
+    switch: {
+      compassOpened: false,
+    }
+  };
 };
 
 const angleMap = {};
@@ -368,6 +422,7 @@ for (let i = 235; i < 360; i++) {
 
 const hudManager = {
   _initStage: () => {
+    hud = initHud();
     // hud.layer.wavy.getNativeCanvasElement().style.filter = 'url(#bars)';
 
     for (const stat of Object.values(hud.component.stats)) {
@@ -378,9 +433,9 @@ const hudManager = {
 
     hud.layer.display.add(hud.component.compass);
 
-    hud.layer.display.add(hud.component.car.speedometer);
-    hud.layer.display.add(hud.component.car.tachometer);
-    hud.layer.display.add(hud.component.car.speedometerText);
+    for (const carNode of Object.values(hud.component.car)) {
+      hud.layer.display.add(carNode);
+    }
 
     hud.layer.display.add(hud.component.atomicId.atomicRp);
     hud.layer.display.add(hud.component.atomicId.id);
@@ -412,9 +467,9 @@ const hudManager = {
     }
   },
   setShowSpeedometer: (show = true) => {
-    hudManager._showNode(hud.component.car.speedometer, show);
-    hudManager._showNode(hud.component.car.tachometer, show);
-    hudManager._showNode(hud.component.car.speedometerText, show);
+    for (const carNode of Object.values(hud.component.car)) {
+      hudManager._showNode(carNode, show);
+    }
   },
   setShowPlace: (show = true) => {
     hudManager._showNode(hud.component.place.primary, show);
@@ -469,10 +524,13 @@ const hudManager = {
     }
   },
   car: {
-    update: (speed, turnover, speedText) => {
+    update: (speed, turnover, speedText, shiftText) => {
       new Konva.Tween({node: hud.component.car.speedometer, duration: 0.1, angle: 360 - (speed * (360 - carMaxAngle))}).play();
+      new Konva.Tween({node: hud.component.car.speedometerFinish, duration: 0.1, rotation: 360 + 40 - (speed * (360 - carMaxAngle))}).play();
       new Konva.Tween({node: hud.component.car.tachometer, duration: 0.1, angle: 360 - (turnover * (360 - carMaxAngle))}).play();
+      new Konva.Tween({node: hud.component.car.tachometerFinish, duration: 0.1, rotation: 360 + 40 - (turnover * (360 - carMaxAngle))}).play();
       hud.component.car.speedometerText.text(speedText);
+      hud.component.car.shiftText.text(shiftText);
     },
   },
   filter: {
@@ -572,7 +630,50 @@ const hudManager = {
   }
 }
 
-hudManager._initStage();
-hudManager._draw();
-// setTimeout(hudManager.setMode.onFoot, 500);
-setTimeout(hudManager._draw, 1000);
+const loadFont = (callback) => {
+  // FONT LOADING DETECTION CODE:
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.font = 'normal 20px Redemption';
+
+  var isFontLoaded = false;
+  var TEXT_TEXT = 'Some test text;';
+  var initialMeasure = ctx.measureText(TEXT_TEXT);
+  var initialWidth = initialMeasure.width;
+
+  // here is how the function works
+  // different fontFamily may have different width of symbols
+  // when font is not loaded a browser will use startard font as a fallback
+  // probably Arial
+  // when font is loaded measureText will return another width
+  function whenFontIsLoaded(callback, attemptCount) {
+    if (attemptCount === undefined) {
+      attemptCount = 0;
+    }
+    if (attemptCount >= 20) {
+      callback();
+      return;
+    }
+    if (isFontLoaded) {
+      callback();
+      return;
+    }
+    const metrics = ctx.measureText(TEXT_TEXT);
+    const width = metrics.width;
+    if (width !== initialWidth) {
+      isFontLoaded = true;
+      callback();
+    } else {
+      setTimeout(function () {
+        whenFontIsLoaded(callback, attemptCount + 1);
+      }, 1000);
+    }
+  }
+  whenFontIsLoaded(callback);
+}
+
+loadFont(() => {
+  hudManager._initStage();
+  hudManager._draw();
+  setTimeout(hudManager.setMode.swimmingInCar, 500);
+});

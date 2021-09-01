@@ -44,7 +44,7 @@
       for (const statName of Object.keys(hud.component.stats)) {
         hudManager.stats.setValue(statName, Math.random());
       }
-      hudManager.car.update(Math.random(), Math.random(), Math.floor(Math.random() * 300) + 'mph');
+      hudManager.car.update(Math.random(), Math.random(), Math.floor(Math.random() * 300) + 'mph', Math.floor(Math.random() * 8) + 1);
     }
   </script>
   <button onclick="random()">RANDOM VALUES</button>
