@@ -220,7 +220,7 @@ const initStats = () => {
       },
       node: {background, value, icon},
       flashStart: () => {
-        new Konva.Tween({node: value, duration: 0.1, fill: pSBC(0.1, stat.color)}).play();
+        new Konva.Tween({node: value, duration: 0.1, fill: pSBC(0.3, stat.color)}).play();
         new Konva.Tween({node: background, duration: 0.1, fill:  pSBC(-0.75, stat.color)}).play();
       },
       flashStop: () => {
