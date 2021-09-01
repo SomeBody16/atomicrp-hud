@@ -422,17 +422,44 @@ const hudManager = {
   },
 
   compass: {
-    setRotation: (rotation) => {
-      const diff = Math.abs(hud.component.compass.rotation() - rotation);
-      if (diff > 180) {
-        new Konva.Tween({node: hud.component.compass, rotation: 0, duration: 0.05}).play();
-        setTimeout(() => {
-          hud.component.compass.rotation(360);
-          new Konva.Tween({node: hud.component.compass, rotation, duration: 0.05}).play();
-        }, 0.05);
-      } else {
-        new Konva.Tween({node: hud.component.compass, rotation, duration: 0.1}).play();
-      }
+    setRotation: (destRotation) => {
+      const animDuration = 100;
+
+      const baseRotation = hud.component.compass.rotation();
+      const diffRotation = Math.abs(baseRotation - destRotation);
+
+      const anim = new Konva.Animation((frame) => {
+        const progress = Math.min(frame.time / animDuration, 1);
+        if (progress >= 1) {
+          hud.component.compass.rotation(destRotation);
+          anim.stop();
+          return;
+        }
+
+        if (diffRotation > 180) {
+          if (destRotation > baseRotation) { // 10 -> 350
+            let trueDiffRotation = (360 - destRotation) + baseRotation;
+            let newRotation = baseRotation - (trueDiffRotation * progress);
+            if (newRotation < 0) newRotation += 360;
+            hud.component.compass.rotation(newRotation);
+          } else { // 350 -> 10
+            let trueDiffRotation = (360 - baseRotation) + destRotation;
+            let newRotation = baseRotation + (trueDiffRotation * progress);
+            if (newRotation > 360) newRotation -= 360;
+            hud.component.compass.rotation(newRotation);
+          }
+        } else {
+          if (destRotation > baseRotation) { // 100 -> 200
+            let newRotation = baseRotation + (diffRotation * progress);
+            hud.component.compass.rotation(newRotation);
+          } else { // 200 -> 100
+            let newRotation = baseRotation - (diffRotation * progress);
+            if (newRotation > 360) newRotation -= 360;
+            hud.component.compass.rotation(newRotation);
+          }
+        }
+      }, hud.layer.display);
+      anim.start();
     },
   },
   place: {

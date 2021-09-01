@@ -95,6 +95,9 @@
 
     <button onclick="hudManager.compass.setRotation(prompt('Rotation', Math.floor(Math.random() * 360)))">Set rotation</button>
     <button onclick="hudManager.compass.setRotation(10); setTimeout(() => hudManager.compass.setRotation(350), 1000)">10 -> 350</button>
+    <button onclick="hudManager.compass.setRotation(350); setTimeout(() => hudManager.compass.setRotation(10), 1000)">350 -> 10</button>
+    <button onclick="hudManager.compass.setRotation(100); setTimeout(() => hudManager.compass.setRotation(200), 1000)">100 -> 200</button>
+    <button onclick="hudManager.compass.setRotation(200); setTimeout(() => hudManager.compass.setRotation(100), 1000)">200 -> 100</button>
   </fieldset>
 </div>
 
