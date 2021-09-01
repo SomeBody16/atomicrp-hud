@@ -91,6 +91,7 @@ const initCompass = () => {
         fontStyle: letters[angle].fontStyle,
         fontFamily: 'Redemption',
         fill: letters[angle].color,
+        ...shadow,
       });
       letter.offsetX(letter.width() / 2.5);
       letter.offsetY(letter.height() / 3);
