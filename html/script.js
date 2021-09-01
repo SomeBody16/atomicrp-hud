@@ -266,9 +266,9 @@ const initStats = () => {
 const initAtomicId = () => {
   const atomicRp = new Konva.Text({
     x: 30,
-    y: stage.height() - 60,
+    y: stage.height() - 50,
     text: 'Atomic RP',
-    fontSize: 30,
+    fontSize: 35,
     fontFamily: 'Redemption',
     fill: '#F60',
     ...shadow,
@@ -277,7 +277,7 @@ const initAtomicId = () => {
     x: 30,
     y: stage.height() - 90,
     text: '2137',
-    fontSize: 30,
+    fontSize: 45,
     fontFamily: 'Redemption',
     fill: '#F60',
     ...shadow,
@@ -331,13 +331,15 @@ const initCar = () => {
   tachometer.rotation(50);
 
   const speedometerText = new Konva.Text({
-    ...getCirclePos(textRadius, 56, mapPos),
+    ...getCirclePos(textRadius, 57, mapPos),
     text: `0mph`,
-    fontSize: 50,
+    fontSize: 70,
     fontFamily: 'Redemption',
     fill: 'white',
+    align: 'center',
     ...shadow,
   });
+  speedometerText.move({x: -30, y: 0});
 
   return { speedometer, tachometer, speedometerText };
 }
