@@ -318,6 +318,16 @@ const initCar = () => {
     ...shadow,
   });
   speedometer.rotation(40);
+  const speedometerLine = new Konva.Arc({
+    ...mapPos,
+    innerRadius: statsRadius + 14,
+    outerRadius: statsRadius + 16,
+    angle: carMaxAngle,
+    fill: '#FA0',
+    clockwise: true,
+    ...shadow,
+  });
+  speedometerLine.rotation(40);
 
   const speedometerFinish = new Konva.Arc({
     ...mapPos,
@@ -338,6 +348,16 @@ const initCar = () => {
     ...shadow,
   });
   tachometer.rotation(40);
+  const tachometerLine = new Konva.Arc({
+    ...mapPos,
+    innerRadius: statsRadius - 9,
+    outerRadius: statsRadius - 11,
+    angle: carMaxAngle,
+    fill: '#888',
+    clockwise: true,
+    ...shadow,
+  });
+  tachometerLine.rotation(40);
   const tachometerFinish = new Konva.Arc({
     ...mapPos,
     innerRadius: statsRadius - 4,
@@ -392,7 +412,12 @@ const initCar = () => {
   speedometerText.offsetY(shiftText.height() / 2.2);
 
 
-  return { speedometer, speedometerFinish, tachometer, tachometerFinish, speedometerText, shiftBackground, shiftText};
+  return {
+    speedometerLine, speedometer, speedometerFinish,
+    tachometerLine, tachometer, tachometerFinish,
+    speedometerText,
+    shiftBackground, shiftText
+  };
 }
 
 let hud = {};
