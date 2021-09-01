@@ -266,7 +266,7 @@ const initStats = () => {
 const initAtomicId = () => {
   const atomicRp = new Konva.Text({
     x: 30,
-    y: stage.height() - 50,
+    y: stage.height() - 40,
     text: 'Atomic RP',
     fontSize: 35,
     fontFamily: 'Redemption',
@@ -275,7 +275,7 @@ const initAtomicId = () => {
   });
   const id = new Konva.Text({
     x: 30,
-    y: stage.height() - 90,
+    y: stage.height() - 80,
     text: '2137',
     fontSize: 45,
     fontFamily: 'Redemption',
