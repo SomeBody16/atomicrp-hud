@@ -265,8 +265,8 @@ const initStats = () => {
 
 const initAtomicId = () => {
   const atomicRp = new Konva.Text({
-    x: 10,
-    y: stage.height() - 40,
+    x: 30,
+    y: stage.height() - 60,
     text: 'Atomic RP',
     fontSize: 30,
     fontFamily: 'Redemption',
@@ -274,8 +274,8 @@ const initAtomicId = () => {
     ...shadow,
   });
   const id = new Konva.Text({
-    x: 10,
-    y: stage.height() - 70,
+    x: 30,
+    y: stage.height() - 90,
     text: '2137',
     fontSize: 30,
     fontFamily: 'Redemption',
@@ -469,7 +469,7 @@ const hudManager = {
         }
         const pos = !hud.switch.compassOpened
           ? getStatPosition(stat.order + orderDiff)
-          : {...getStatPosition(0), y: stage.height() - 120 - ((stat.order + orderDiff) * 80)}
+          : {...getStatPosition(0), y: stage.height() - 140 - ((stat.order + orderDiff) * 80)}
         stat.moveTo(pos);
       }
     }
