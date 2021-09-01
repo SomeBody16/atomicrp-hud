@@ -422,7 +422,16 @@ const hudManager = {
 
   compass: {
     setRotation: (rotation) => {
-      new Konva.Tween({node: hud.component.compass, rotation, duration: 0.1}).play();
+      const diff = Math.abs(hud.component.compass.rotation() - rotation);
+      if (diff > 180) {
+        new Konva.Tween({node: hud.component.compass, rotation: 0, duration: 0.05}).play();
+        setTimeout(() => {
+          hud.component.compass.rotation(360);
+          new Konva.Tween({node: hud.component.compass, rotation, duration: 0.05}).play();
+        }, 0.05);
+      } else {
+        new Konva.Tween({node: hud.component.compass, rotation, duration: 0.1}).play();
+      }
     },
   },
   place: {
