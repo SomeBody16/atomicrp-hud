@@ -196,10 +196,11 @@ const initStats = () => {
       innerRadius: 27,
       outerRadius: 33,
       angle: stat.value * 360,
-      rotationDeg: -90,
       fill: stat.color,
       ...shadow,
     });
+    value.rotation(-90);
+
     const icon = new Konva.Path({
       x: pos.x - 15 + (stat.iconMargin ?? 0),
       y: pos.y - 15,
@@ -311,21 +312,22 @@ const initCar = () => {
     innerRadius: statsRadius + 5,
     outerRadius: statsRadius + 25,
     angle: 260,
-    rotationDeg: 55,
     fill: '#FA0',
     clockwise: true,
     ...shadow,
   });
+  speedometer.rotation(55);
+
   const tachometer = new Konva.Arc({
     ...mapPos,
     innerRadius: statsRadius - 5,
     outerRadius: statsRadius - 15,
     angle: 260,
-    rotationDeg: 55,
-    fill: '#888',
+      fill: '#888',
     clockwise: true,
     ...shadow,
   });
+  tachometer.rotation(55);
 
   const speedometerText = new Konva.Text({
     ...getCirclePos(textRadius, 50, mapPos),
