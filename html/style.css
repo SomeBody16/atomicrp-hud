@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "Redemption";
+    src: url("fonts/Redemption.eot");
+    src: url("fonts/Redemption.eot?#iefix") format("embedded-opentype"),
+    url("fonts/Redemption.woff2") format("woff2"),
+    url("fonts/Redemption.woff") format("woff"),
+    url("fonts/Redemption.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}

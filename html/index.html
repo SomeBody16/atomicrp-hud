@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="SomeBody16#1616" />
+  <title>pl.somebody16.atomicrp.hud</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/konva@8/konva.min.js"></script>
+  <script src="helpers.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="fivem.js" defer></script>
+</head>
+<body bgcolor="#555">
+
+<svg>
+  <filter id="bars">
+<!--    <feTurbulence x="0" y="0" baseFrequency="0.1" numOctaves="1" seed="2">-->
+<!--      <animate attributeName="baseFrequency" dur="240s" values="0.02;0.005;0.02" repeatCount="indefinite"></animate>-->
+<!--    </feTurbulence>-->
+<!--    <feDisplacementMap in="SourceGraphic" scale="2"></feDisplacementMap>-->
+  </filter>
+  <filter id="drunk">
+    <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="2" seed="2">
+      <animate attributeName="baseFrequency" dur="120s" values="0.02;0.005;0.02" repeatCount="indefinite"></animate>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" scale="25"></feDisplacementMap>
+  </filter>
+</svg>
+
+<div
+  id="container"
+  style="border: 1px solid red; margin: 200px 200px; width: 1080px; height: 720px;"
+></div>
+
+<div
+  style="position: fixed; top: 0; left: 0;"
+>
+  <script>
+    function random() {
+      hudManager.compass.setRotation(Math.floor(Math.random() * 360));
+      for (const statName of Object.keys(hud.component.stats)) {
+        hudManager.stats.setValue(statName, Math.random());
+      }
+      hudManager.car.update(Math.random(), Math.random(), Math.floor(Math.random() * 300) + 'mph');
+    }
+  </script>
+  <button onclick="random()">RANDOM VALUES</button>
+
+  <button onclick="hudManager.setShow(true)">Show</button>
+  <button onclick="hudManager.setShow(false)">Hide</button>
+
+  <button onclick="hudManager.setShowCompass(true)">Show compass</button>
+  <button onclick="hudManager.setShowCompass(false)">Hide compass</button>
+
+  <button onclick="hudManager.setShowPlayerStats(true)">Show player stats</button>
+  <button onclick="hudManager.setShowPlayerStats(false)">Hide player stats</button>
+
+  <button onclick="hudManager.setShowSpeedometer(true)">Show speedometer</button>
+  <button onclick="hudManager.setShowSpeedometer(false)">Hide speedometer</button>
+
+  <button onclick="hudManager.setShowPlace(true)">Show place</button>
+  <button onclick="hudManager.setShowPlace(false)">Hide place</button>
+
+  <button onclick="hudManager.filter.drunk()">Drunk filter on</button>
+  <button onclick="hudManager.filter.clear()">Filter off</button>
+
+  <button onclick="hudManager.place.update(prompt('Primary', 'Okno'), prompt('Secondary', 'Życia'))">Update place</button>
+  <button onclick="hudManager.car.update(prompt('Speed', Math.random()), prompt('Turnover', Math.random()), prompt('Speed text', Math.floor(Math.random() * 300) + 'mph'))">Update car</button>
+
+  <fieldset>
+    <legend>Stats</legend>
+    <button onclick="hudManager.stats.show(prompt('Stat name', 'health'))">Show</button>
+    <button onclick="hudManager.stats.hide(prompt('Stat name', 'health'))">Hide</button>
+    <button onclick="hudManager.stats.setValue(prompt('Stat name', 'health'), prompt('Value', Math.random()))">Set value</button>
+    <button onclick="hudManager.stats.flashStart(prompt('Stat name', 'voice'))">Flash start</button>
+    <button onclick="hudManager.stats.flashStop(prompt('Stat name', 'voice'))">Flash stop</button>
+  </fieldset>
+
+  <fieldset>
+    <legend>Mode</legend>
+
+    <button onclick="hudManager.setMode.onFoot()">On foot</button>
+    <button onclick="hudManager.setMode.openedPhoneOnFoot()">Opened phone on foot</button>
+    <button onclick="hudManager.setMode.swimming()">Swimming</button>
+    <button onclick="hudManager.setMode.swimmingInCar()">Swimming in car</button>
+    <button onclick="hudManager.setMode.inCar()">In car</button>
+    <button onclick="hudManager.setMode.openedPhoneWhileSwimming()">Opened phone while swimming</button>
+  </fieldset>
+
+  <fieldset>
+    <legend>Compass</legend>
+
+    <button onclick="hudManager.compass.setRotation(prompt('Rotation', Math.floor(Math.random() * 360)))">Set rotation</button>
+  </fieldset>
+</div>
+
+</body>
+</html>
