@@ -276,7 +276,7 @@ const initAtomicId = () => {
   const id = new Konva.Text({
     x: 30,
     y: stage.height() - 80,
-    text: '2137',
+    text: '...',
     fontSize: 45,
     fontFamily: 'Redemption',
     fill: '#F60',
