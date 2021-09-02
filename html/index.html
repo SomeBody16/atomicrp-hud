@@ -64,6 +64,8 @@
   <button onclick="hudManager.setShowPlace(true)">Show place</button>
   <button onclick="hudManager.setShowPlace(false)">Hide place</button>
 
+  <button onclick="hudManager.setAtomicId(prompt('Id', (Math.floor(Math.random() * 3000) + 1).toString()))">Set ID</button>
+
   <button onclick="hudManager.filter.drunk()">Drunk filter on</button>
   <button onclick="hudManager.filter.clear()">Filter off</button>
 

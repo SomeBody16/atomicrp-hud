@@ -202,13 +202,13 @@ const initStats = () => {
     value.rotation(-90);
 
     const icon = new Konva.Path({
-      x: pos.x - 22 + (stat.iconMargin ?? 0),
+      x: pos.x - 22 + (stat.iconMargin || 0),
       y: pos.y - 22,
       data: stat.icon,
       fill: 'lightgray',
       scale: {
-        x: 0.09 * (stat.iconScale ?? 1),
-        y: 0.09 * (stat.iconScale ?? 1),
+        x: 0.09 * (stat.iconScale || 1),
+        y: 0.09 * (stat.iconScale || 1),
       },
     });
 
@@ -243,7 +243,7 @@ const initStats = () => {
         background.position(pos);
         value.position(pos);
         icon.position({
-          x: pos.x - 22 + (stat.iconMargin ?? 0),
+          x: pos.x - 22 + (stat.iconMargin || 0),
           y: pos.y - 22,
         });
       },
@@ -252,7 +252,7 @@ const initStats = () => {
         new Konva.Tween({ node: value, ...pos, duration }).play();
         new Konva.Tween({
           node: icon,
-          x: pos.x - 22 + (stat.iconMargin ?? 0),
+          x: pos.x - 22 + (stat.iconMargin || 0),
           y: pos.y - 22,
           duration
         }).play();
@@ -499,6 +499,9 @@ const hudManager = {
   setShowPlace: (show = true) => {
     hudManager._showNode(hud.component.place.primary, show);
     hudManager._showNode(hud.component.place.secondary, show);
+  },
+  setAtomicId: (id) => {
+    hud.component.atomicId.id.text(id || '0');
   },
 
   compass: {
