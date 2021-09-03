@@ -500,8 +500,9 @@ const hudManager = {
     }
   },
   setShowPlace: (show = true) => {
-    hudManager._showNode(hud.component.place.primary, show);
-    hudManager._showNode(hud.component.place.secondary, show);
+    for (const node of Object.values(hud.component.place)) {
+      hudManager._showNode(node, show);
+    }
   },
   setAtomicId: (id) => {
     hud.component.atomicId.id.text(id || '0');
