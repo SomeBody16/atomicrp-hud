@@ -12,6 +12,19 @@
   <script src="helpers.js" defer></script>
   <script src="script.js" defer></script>
   <script src="fivem.js" defer></script>
+  <script defer>
+    setTimeout(() => {
+      // Clear display
+      hudManager.setMode.onFoot();
+      hudManager.setAtomicId('...');
+      hudManager.compass.setRotation(0);
+      hudManager.place.update('', '');
+      hudManager.car.update(0, 0, '', '1');
+      for (const stat of Object.values(hud.component.stats)) {
+        stat.setValue(1);
+      }
+    }, 2000);
+  </script>
 </head>
 <body>
 

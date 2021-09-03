@@ -10,6 +10,11 @@ const shadow = {
   shadowOpacity: 0.7,
 };
 
+const color = {
+  primary: '#F00',
+  secondary: '#FA0',
+}
+
 const mapRadius = stage.height() * 0.40;
 const mapPos = {
   x: mapRadius + (stage.width() * 0.045),
@@ -20,7 +25,7 @@ const textRadius = statsRadius + 65;
 
 const initCompass = () => {
   const group = new Konva.Group();
-  const mainColor = '#F60';
+  const mainColor = color.primary;
   const subColor = '#AAA';
 
   const mainSize = 40;
@@ -33,7 +38,7 @@ const initCompass = () => {
       180: {
         letter: 'N',
         letterAngle: 0,
-        color: '#F00',
+        color: color.secondary,
         fontSize: 50,
       },
       225: {
@@ -270,7 +275,7 @@ const initAtomicId = () => {
     text: 'Atomic RP',
     fontSize: 35,
     fontFamily: 'Redemption',
-    fill: '#F60',
+    fill: color.primary,
     ...shadow,
   });
   const id = new Konva.Text({
@@ -279,7 +284,7 @@ const initAtomicId = () => {
     text: '...',
     fontSize: 45,
     fontFamily: 'Redemption',
-    fill: '#F60',
+    fill: color.primary,
     ...shadow,
   });
   return { atomicRp, id };
@@ -291,7 +296,7 @@ const initPlace = () => {
     text: `Pillbox Hill`,
     fontSize: 50,
     fontFamily: 'Redemption',
-    fill: '#F60',
+    fill: color.primary,
     ...shadow,
   });
   const secondary = new Konva.Text({
@@ -321,7 +326,7 @@ const initCar = () => {
     innerRadius: statsRadius + 5,
     outerRadius: statsRadius + 25,
     angle: carMaxAngle,
-    fill: '#FA0',
+    fill: color.primary,
     clockwise: true,
     ...shadow,
   });
@@ -331,7 +336,7 @@ const initCar = () => {
     innerRadius: statsRadius + 14,
     outerRadius: statsRadius + 16,
     angle: carMaxAngle,
-    fill: '#FA0',
+    fill: color.primary,
     clockwise: true,
     ...shadow,
   });
@@ -342,7 +347,7 @@ const initCar = () => {
     innerRadius: statsRadius + 4,
     outerRadius: statsRadius + 26,
     angle: 0.5,
-    fill: '#F00',
+    fill: color.secondary,
   });
   speedometerFinish.rotation(carMaxAngle + 40);
 
@@ -371,7 +376,7 @@ const initCar = () => {
     innerRadius: statsRadius - 4,
     outerRadius: statsRadius - 16,
     angle: 0.5,
-    fill: '#F00',
+    fill: color.secondary,
   });
   tachometerFinish.rotation(carMaxAngle + 40);
 
@@ -566,10 +571,14 @@ const hudManager = {
   },
   car: {
     update: (speed, turnover, speedText, shiftText) => {
-      new Konva.Tween({node: hud.component.car.speedometer, duration: 0.1, angle: 360 - (speed * (360 - carMaxAngle))}).play();
-      new Konva.Tween({node: hud.component.car.speedometerFinish, duration: 0.1, rotation: 360 + 40 - (speed * (360 - carMaxAngle))}).play();
-      new Konva.Tween({node: hud.component.car.tachometer, duration: 0.1, angle: 360 - (turnover * (360 - carMaxAngle))}).play();
-      new Konva.Tween({node: hud.component.car.tachometerFinish, duration: 0.1, rotation: 360 + 40 - (turnover * (360 - carMaxAngle))}).play();
+      const speedAngle = 359.9 - (speed * (360 - carMaxAngle));
+      new Konva.Tween({node: hud.component.car.speedometer, duration: 0.1, angle: speedAngle}).play();
+      new Konva.Tween({node: hud.component.car.speedometerFinish, duration: 0.1, rotation: speedAngle + 40}).play();
+
+      const turnoverAngle = 359.9 - (turnover * (360 - carMaxAngle));
+      new Konva.Tween({node: hud.component.car.tachometer, duration: 0.1, angle: turnoverAngle}).play();
+      new Konva.Tween({node: hud.component.car.tachometerFinish, duration: 0.1, rotation: turnoverAngle + 40}).play();
+
       hud.component.car.speedometerText.text(speedText);
       hud.component.car.shiftText.text(shiftText);
     },
