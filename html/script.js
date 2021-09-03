@@ -295,7 +295,15 @@ const initPlace = () => {
     ...shadow,
   });
   const secondary = new Konva.Text({
-    ...getCirclePos(textRadius, 135, mapPos),
+    ...getCirclePos(textRadius, 136, mapPos),
+    text: `Elgin Ave`,
+    fontSize: 40,
+    fontFamily: 'Redemption',
+    fill: '#DDD',
+    ...shadow,
+  });
+  const secondarySecondLine = new Konva.Text({
+    ...getCirclePos(textRadius, 128, mapPos),
     text: `Elgin Ave`,
     fontSize: 40,
     fontFamily: 'Redemption',
@@ -303,7 +311,7 @@ const initPlace = () => {
     ...shadow,
   });
 
-  return { primary, secondary };
+  return { primary, secondary, secondarySecondLine };
 }
 
 const carMaxAngle = 298;
@@ -450,24 +458,19 @@ const hudManager = {
     hud = initHud();
     // hud.layer.wavy.getNativeCanvasElement().style.filter = 'url(#bars)';
 
-    for (const stat of Object.values(hud.component.stats)) {
-      hud.layer.display.add(stat.node.background);
-      hud.layer.display.add(stat.node.icon);
-      hud.layer.display.add(stat.node.value);
-    }
+    const components = [
+      ...Object.values(hud.component.stats).map(s => s.node.background),
+      ...Object.values(hud.component.stats).map(s => s.node.icon),
+      ...Object.values(hud.component.stats).map(s => s.node.value),
+      hud.component.compass,
+      ...Object.values(hud.component.car),
+      ...Object.values(hud.component.atomicId),
+      ...Object.values(hud.component.place),
+    ];
 
-    hud.layer.display.add(hud.component.compass);
-
-    for (const carNode of Object.values(hud.component.car)) {
-      hud.layer.display.add(carNode);
-    }
-
-    hud.layer.display.add(hud.component.atomicId.atomicRp);
-    hud.layer.display.add(hud.component.atomicId.id);
-
-    hud.layer.display.add(hud.component.place.primary);
-    hud.layer.display.add(hud.component.place.secondary);
-
+    components.forEach(component => {
+      hud.layer.display.add(component);
+    });
 
     stage.add(hud.layer.display);
     // stage.add(hud.layer.wavy);
@@ -549,6 +552,15 @@ const hudManager = {
     update: (primary, secondary) => {
       hud.component.place.primary.text(primary);
       hud.component.place.secondary.text(secondary);
+      hud.component.place.secondarySecondLine.text('');
+
+      while (hud.component.place.secondary.width() > 450) {
+        const secondaryText = hud.component.place.secondary.text().split(' ');
+        hud.component.place.secondarySecondLine.text(
+          secondaryText.pop() + ' ' + hud.component.place.secondarySecondLine.text()
+        );
+        hud.component.place.secondary.text(secondaryText.join(' '));
+      }
     }
   },
   car: {
