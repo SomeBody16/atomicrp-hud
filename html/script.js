@@ -234,8 +234,14 @@ const initStats = () => {
         new Konva.Tween({node: background, duration: 0.5, fill: 'black'}).play();
       },
       setValue: (newValue) => {
+        const currAngle = value.angle();
+        const newAngle = newValue * 360;
+        if (currAngle === newAngle) {
+          return;
+        }
+
         new Konva.Tween({node: icon, duration: 0.05, fill: stat.color}).play();
-        new Konva.Tween({node: value, duration: 0.2, angle: newValue * 360}).play();
+        new Konva.Tween({node: value, duration: 0.2, angle: newAngle}).play();
         setTimeout(
           () => new Konva.Tween({node: icon, duration: 0.5, fill: 'lightgray'}).play(),
           200
