@@ -522,14 +522,17 @@ const hudManager = {
   compass: {
     _rotation: 0,
     setRotation: (nR) => {
-      if (Math.abs(hud.component.compass.rotation() - nR) <= 1) return;
-
       // https://stackoverflow.com/a/19872672/7879518
       let aR = hudManager.compass._rotation % 360;
       if ( aR < 0 ) { aR += 360; }
       if ( aR < 180 && (nR > (aR + 180)) ) { hudManager.compass._rotation -= 360; }
       if ( aR >= 180 && (nR <= (aR - 180)) ) { hudManager.compass._rotation += 360; }
       hudManager.compass._rotation += (nR - aR);
+
+      if (Math.abs(hud.component.compass.rotation() - hudManager.compass._rotation) <= 1) {
+        hud.component.compass.rotation(hudManager.compass._rotation);
+        return
+      }
 
       new Konva.Tween({
         node: hud.component.compass,
