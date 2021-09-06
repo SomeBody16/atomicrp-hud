@@ -520,44 +520,22 @@ const hudManager = {
   },
 
   compass: {
-    setRotation: (destRotation) => {
-      const animDuration = 100;
+    _rotation: 0,
+    setRotation: (nR) => {
+      if (Math.abs(hud.component.compass.rotation() - nR) <= 1) return;
 
-      const baseRotation = hud.component.compass.rotation();
-      const diffRotation = Math.abs(baseRotation - destRotation);
+      // https://stackoverflow.com/a/19872672/7879518
+      let aR = hudManager.compass._rotation % 360;
+      if ( aR < 0 ) { aR += 360; }
+      if ( aR < 180 && (nR > (aR + 180)) ) { hudManager.compass._rotation -= 360; }
+      if ( aR >= 180 && (nR <= (aR - 180)) ) { hudManager.compass._rotation += 360; }
+      hudManager.compass._rotation += (nR - aR);
 
-      const anim = new Konva.Animation((frame) => {
-        const progress = Math.min(frame.time / animDuration, 1);
-        if (progress >= 1) {
-          hud.component.compass.rotation(destRotation);
-          anim.stop();
-          return;
-        }
-
-        if (diffRotation > 180) {
-          if (destRotation > baseRotation) { // 10 -> 350
-            let trueDiffRotation = (360 - destRotation) + baseRotation;
-            let newRotation = baseRotation - (trueDiffRotation * progress);
-            if (newRotation < 0) newRotation += 360;
-            hud.component.compass.rotation(newRotation);
-          } else { // 350 -> 10
-            let trueDiffRotation = (360 - baseRotation) + destRotation;
-            let newRotation = baseRotation + (trueDiffRotation * progress);
-            if (newRotation > 360) newRotation -= 360;
-            hud.component.compass.rotation(newRotation);
-          }
-        } else {
-          if (destRotation > baseRotation) { // 100 -> 200
-            let newRotation = baseRotation + (diffRotation * progress);
-            hud.component.compass.rotation(newRotation);
-          } else { // 200 -> 100
-            let newRotation = baseRotation - (diffRotation * progress);
-            if (newRotation > 360) newRotation -= 360;
-            hud.component.compass.rotation(newRotation);
-          }
-        }
-      }, hud.layer.display);
-      anim.start();
+      new Konva.Tween({
+        node: hud.component.compass,
+        rotation: hudManager.compass._rotation,
+        duration: 0.1,
+      }).play();
     },
   },
   place: {
