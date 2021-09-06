@@ -4,12 +4,6 @@ const stage = new Konva.Stage({
   height: 720
 });
 
-const shadow = {
-  shadowColor: 'black',
-  shadowBlur: 6,
-  shadowOpacity: 0.7,
-};
-
 const color = {
   primary: '#F00',
   secondary: '#FA0',
@@ -96,7 +90,6 @@ const initCompass = () => {
         fontStyle: letters[angle].fontStyle,
         fontFamily: 'Redemption',
         fill: letters[angle].color,
-        ...shadow,
       });
       letter.offsetX(letter.width() / 2);
       letter.offsetY(letter.height() / 3);
@@ -112,7 +105,6 @@ const initCompass = () => {
         strokeWidth: 2,
         lineCap: 'round',
         lineJoin: 'round',
-        ...shadow,
       });
       group.add(line);
     }
@@ -194,7 +186,6 @@ const initStats = () => {
       radius: 40,
       fill: 'black',
       stroke: pSBC(-0.75, stat.color),
-      ...shadow,
     });
     const value = new Konva.Arc({
       ...pos,
@@ -202,7 +193,6 @@ const initStats = () => {
       outerRadius: 45,
       angle: stat.value * 360,
       fill: stat.color,
-      ...shadow,
     });
     value.rotation(-90);
 
@@ -282,7 +272,6 @@ const initAtomicId = () => {
     fontSize: 35,
     fontFamily: 'Redemption',
     fill: color.primary,
-    ...shadow,
   });
   const id = new Konva.Text({
     x: 30,
@@ -291,7 +280,6 @@ const initAtomicId = () => {
     fontSize: 45,
     fontFamily: 'Redemption',
     fill: color.primary,
-    ...shadow,
   });
   return { atomicRp, id };
 }
@@ -303,7 +291,6 @@ const initPlace = () => {
     fontSize: 50,
     fontFamily: 'Redemption',
     fill: color.primary,
-    ...shadow,
   });
   const secondary = new Konva.Text({
     ...getCirclePos(textRadius, 136, mapPos),
@@ -311,7 +298,6 @@ const initPlace = () => {
     fontSize: 40,
     fontFamily: 'Redemption',
     fill: '#DDD',
-    ...shadow,
   });
   const secondarySecondLine = new Konva.Text({
     ...getCirclePos(textRadius, 128, mapPos),
@@ -319,7 +305,6 @@ const initPlace = () => {
     fontSize: 40,
     fontFamily: 'Redemption',
     fill: '#DDD',
-    ...shadow,
   });
 
   return { primary, secondary, secondarySecondLine };
@@ -334,7 +319,6 @@ const initCar = () => {
     angle: carMaxAngle,
     fill: color.primary,
     clockwise: true,
-    ...shadow,
   });
   speedometer.rotation(40);
   const speedometerLine = new Konva.Arc({
@@ -344,7 +328,6 @@ const initCar = () => {
     angle: carMaxAngle,
     fill: color.primary,
     clockwise: true,
-    ...shadow,
   });
   speedometerLine.rotation(40);
 
@@ -364,7 +347,6 @@ const initCar = () => {
     angle: carMaxAngle,
     fill: '#888',
     clockwise: true,
-    ...shadow,
   });
   tachometer.rotation(40);
   const tachometerLine = new Konva.Arc({
@@ -374,7 +356,6 @@ const initCar = () => {
     angle: carMaxAngle,
     fill: '#888',
     clockwise: true,
-    ...shadow,
   });
   tachometerLine.rotation(40);
   const tachometerFinish = new Konva.Arc({
@@ -392,7 +373,6 @@ const initCar = () => {
     ...shiftBackgroundPos,
     radius: 40,
     fill: 'black',
-    ...shadow,
   }));
 
   const dots = 24;
@@ -411,7 +391,6 @@ const initCar = () => {
     fontFamily: 'Redemption',
     fill: 'white',
     align: 'center',
-    ...shadow,
   });
   shiftText.offsetX(shiftText.width() / 2.2);
   shiftText.offsetY(shiftText.height() / 2.2);
@@ -425,7 +404,6 @@ const initCar = () => {
     fontFamily: 'Redemption',
     fill: 'white',
     align: 'center',
-    ...shadow,
   });
   speedometerText.offsetX(shiftText.width() / 2);
   speedometerText.offsetY(shiftText.height() / 2.2);
@@ -467,7 +445,7 @@ for (let i = 235; i < 360; i++) {
 const hudManager = {
   _initStage: () => {
     hud = initHud();
-    // hud.layer.wavy.getNativeCanvasElement().style.filter = 'url(#bars)';
+    hud.layer.display.getNativeCanvasElement().style.filter = 'url(#dropshadow)';
 
     const components = [
       ...Object.values(hud.component.stats).map(s => s.node.background),
